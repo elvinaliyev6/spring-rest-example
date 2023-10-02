@@ -15,12 +15,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EmployeeController {
 
+
     private final EmployeeService employeeService;
 
     @GetMapping
     public BaseResponse<List<EmployeeResponse>> getAllEmployees(){
         return employeeService.getAllEmployees();
     }
+
+    //getEmployeeById
 
     @PostMapping
     public BaseResponse<Void> saveEmployee(@RequestBody EmployeeRequest employee){
@@ -34,7 +37,8 @@ public class EmployeeController {
 
     @PatchMapping("/{id}")
     public BaseResponse<Void> updateEmployeePatch(@RequestBody EmployeeRequest employeeRequest,@PathVariable Long id){
-        return employeeService.updateEmployee(employeeRequest,id);
+//        return employeeService.updateEmployee(employeeRequest,id);
+        return employeeService.updateEmployeePatch(employeeRequest,id);
     }
 
     @DeleteMapping("/{id}")

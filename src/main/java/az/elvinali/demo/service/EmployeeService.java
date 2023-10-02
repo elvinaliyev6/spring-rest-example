@@ -106,7 +106,7 @@ public class EmployeeService {
     private Employee getEmployeeById(Long id) {
         Optional<Employee> employeeOptional = employeeRepository.findById(id);
 
-        if (employeeOptional.isPresent()) {
+        if (!employeeOptional.isPresent()) {
             throw new BaseException("Employee not found with this id: " + id);
         }
 
@@ -114,4 +114,7 @@ public class EmployeeService {
     }
 
 
+    public BaseResponse<Void> updateEmployeePatch(EmployeeRequest employeeRequest, Long id) {
+        return null;
+    }
 }
