@@ -5,6 +5,7 @@ import az.elvinali.demo.dto.response.BaseResponse;
 import az.elvinali.demo.dto.response.EmployeeResponse;
 import az.elvinali.demo.model.Employee;
 import az.elvinali.demo.service.EmployeeService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,12 +27,12 @@ public class EmployeeController {
     //getEmployeeById
 
     @PostMapping
-    public BaseResponse<Void> saveEmployee(@RequestBody EmployeeRequest employee){
+    public BaseResponse<Void> saveEmployee(@RequestBody @Valid EmployeeRequest employee){
         return employeeService.saveEmployee(employee);
     }
 
     @PutMapping("/{id}")
-    public BaseResponse<Void> updateEmployee(@RequestBody EmployeeRequest employeeRequest,@PathVariable Long id){
+    public BaseResponse<Void> updateEmployee(@RequestBody @Valid EmployeeRequest employeeRequest,@PathVariable Long id){
        return employeeService.updateEmployee(employeeRequest,id);
     }
 

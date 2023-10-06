@@ -4,6 +4,7 @@ import az.elvinali.demo.dto.request.EmployeeRequest;
 import az.elvinali.demo.dto.response.BaseResponse;
 import az.elvinali.demo.dto.response.EmployeeResponse;
 import az.elvinali.demo.dto.response.ResponseStatus;
+import az.elvinali.demo.enums.ErrorCodeEnum;
 import az.elvinali.demo.exception.BaseException;
 import az.elvinali.demo.mapper.EmployeeMapper;
 import az.elvinali.demo.model.Employee;
@@ -27,10 +28,6 @@ public class EmployeeService {
         String name = employee.getName();
         String surname = employee.getSurname();
 
-        if (name == null || surname == null) {
-            throw new BaseException("employee name or surname can not be null");
-        }
-
         Employee emp = employeeMapper.mapRequestToEntity(employee);
         employeeRepository.save(emp);
 
@@ -50,7 +47,7 @@ public class EmployeeService {
         }
 
         if (employeeResponseList.isEmpty() || employeeResponseList == null) {
-            throw new BaseException("Employee not found!");
+            throw new BaseException(ErrorCodeEnum.EMPLOYEE_NOT_FOUND);
         }
 
         return BaseResponse.<List<EmployeeResponse>>builder()
@@ -89,7 +86,7 @@ public class EmployeeService {
         for (Long id : ids) {
             Employee employee = getEmployeeById(id);
             if (employee == null) {
-                throw new BaseException("employee not found with this id: " + id);
+                throw new BaseException(ErrorCodeEnum.EMPLOYEE_NOT_FOUND);
             }
             EmployeeResponse employeeResponse = employeeMapper.mapEntityToResponse(employee);
             employeeList.add(employeeResponse);
@@ -107,7 +104,7 @@ public class EmployeeService {
         Optional<Employee> employeeOptional = employeeRepository.findById(id);
 
         if (!employeeOptional.isPresent()) {
-            throw new BaseException("Employee not found with this id: " + id);
+            throw new BaseException(ErrorCodeEnum.EMPLOYEE_NOT_FOUND);
         }
 
         return employeeOptional.get();
