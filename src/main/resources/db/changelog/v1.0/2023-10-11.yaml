@@ -1,0 +1,47 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2023-10-11-create
+      author: elvinaliyev
+      changes:
+        - createTable:
+            tableName: employees
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                  autoIncrement: true
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: surname
+                  type: varchar(255)
+              - column:
+                  name: father_name
+                  type: varchar(255)
+              - column:
+                  name: age
+                  type: int
+              - column:
+                  name: dob
+                  type: DATE
+              - column:
+                  name: gender
+                  type: varchar(255)
+              - column:
+                  name: city
+                  type: varchar(255)
+              - column:
+                  name: create_date
+                  type: datetime
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: update_date
+                  type: datetime
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: active
+                  type: int
+                  defaultValue: 1
