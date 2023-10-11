@@ -2,6 +2,7 @@ package az.elvinali.demo.mapper;
 
 import az.elvinali.demo.dto.request.EmployeeRequest;
 import az.elvinali.demo.dto.response.EmployeeResponse;
+import az.elvinali.demo.enums.EmployeeGender;
 import az.elvinali.demo.model.Employee;
 import lombok.Data;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,8 @@ public class EmployeeMapper {
                 .gender(employee.getGender())
                 .fatherName(employee.getFatherName())
                 .city(employee.getCity())
+                .createDate(employee.getCreateDate())
+                .updateDate(employee.getUpdateDate())
                 .build();
     }
 

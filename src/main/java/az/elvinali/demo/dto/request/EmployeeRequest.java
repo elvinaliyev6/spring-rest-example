@@ -1,5 +1,6 @@
 package az.elvinali.demo.dto.request;
 
+import az.elvinali.demo.enums.EmployeeGender;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -20,7 +21,7 @@ public class EmployeeRequest {
     String fatherName;
     Integer age;
     LocalDate dob;
-    String gender;
+    EmployeeGender gender;
     String city;
 //data transfer object
 }

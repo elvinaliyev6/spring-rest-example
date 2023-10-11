@@ -38,6 +38,18 @@ public class GlobalExceptionHandler {
         return response;
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    @org.springframework.web.bind.annotation.ResponseStatus(HttpStatus.BAD_REQUEST)
+    public BaseResponse<Void> handleIllegalArgumentException(IllegalArgumentException ex){
+        ResponseStatus status=new ResponseStatus();
+        status.setCode(ErrorCodeEnum.VALIDATION.getCode());
+        status.setMessage(ex.getMessage());
+
+        return BaseResponse.<Void>builder()
+                .status(status)
+                .build();
+    }
+
     @ExceptionHandler(Exception.class)
     @org.springframework.web.bind.annotation.ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public BaseResponse<Void> handleUnknownException(Exception ex) {

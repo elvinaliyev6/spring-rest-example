@@ -1,5 +1,6 @@
 package az.elvinali.demo.dto.response;
 
+import az.elvinali.demo.enums.EmployeeGender;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -17,6 +18,8 @@ public class EmployeeResponse {
     String fatherName;
     Integer age;
     String dob;
-    String gender;
+    EmployeeGender gender;
     String city;
+    Date createDate;
+    Date updateDate;
 }

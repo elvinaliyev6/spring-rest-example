@@ -4,6 +4,7 @@ import az.elvinali.demo.dto.request.EmployeeRequest;
 import az.elvinali.demo.dto.response.BaseResponse;
 import az.elvinali.demo.dto.response.EmployeeResponse;
 import az.elvinali.demo.dto.response.ResponseStatus;
+import az.elvinali.demo.enums.EnumAvailableStatus;
 import az.elvinali.demo.enums.ErrorCodeEnum;
 import az.elvinali.demo.exception.BaseException;
 import az.elvinali.demo.mapper.EmployeeMapper;
@@ -25,9 +26,6 @@ public class EmployeeService {
 
     public BaseResponse<Void> saveEmployee(EmployeeRequest employee) {
 
-        String name = employee.getName();
-        String surname = employee.getSurname();
-
         Employee emp = employeeMapper.mapRequestToEntity(employee);
         employeeRepository.save(emp);
 
@@ -37,7 +35,7 @@ public class EmployeeService {
     }
 
     public BaseResponse<List<EmployeeResponse>> getAllEmployees() {
-        List<Employee> employees = employeeRepository.findAll();
+        List<Employee> employees = employeeRepository.findAllByActive(EnumAvailableStatus.ACTIVE.getValue());
         List<EmployeeResponse> employeeResponseList = new ArrayList<>();
 
         for (Employee employee : employees) {
@@ -57,7 +55,7 @@ public class EmployeeService {
     }
 
     public BaseResponse<Void> updateEmployee(EmployeeRequest employeeRequest, Long id) {
-        Employee employee = getEmployeeById(id);
+        getEmployeeByIdAndActive(id,EnumAvailableStatus.ACTIVE.getValue());
 
        Employee empEntity= employeeMapper.mapRequestToEntity(employeeRequest);
        empEntity.setId(id);
@@ -70,8 +68,9 @@ public class EmployeeService {
     }
 
     public BaseResponse<EmployeeResponse> deleteEmployee(Long id) {
-        Employee employee = getEmployeeById(id);
-        employeeRepository.delete(employee);
+        Employee employee = getEmployeeByIdAndActive(id,EnumAvailableStatus.ACTIVE.getValue());
+        employee.setActive(EnumAvailableStatus.DEACTIVE.getValue());
+        employeeRepository.save(employee);
 
         EmployeeResponse employeeResponse = employeeMapper.mapEntityToResponse(employee);
 
@@ -84,13 +83,14 @@ public class EmployeeService {
     public BaseResponse<List<EmployeeResponse>> deleteSelectedEmployees(List<Long> ids) {
         List<EmployeeResponse> employeeList = new ArrayList<>();
         for (Long id : ids) {
-            Employee employee = getEmployeeById(id);
+            Employee employee = getEmployeeByIdAndActive(id,EnumAvailableStatus.ACTIVE.getValue());
             if (employee == null) {
                 throw new BaseException(ErrorCodeEnum.EMPLOYEE_NOT_FOUND);
             }
+            employee.setActive(EnumAvailableStatus.DEACTIVE.getValue());
             EmployeeResponse employeeResponse = employeeMapper.mapEntityToResponse(employee);
             employeeList.add(employeeResponse);
-            employeeRepository.delete(employee);
+            employeeRepository.save(employee);
         }
 
         return BaseResponse.<List<EmployeeResponse>>
@@ -100,18 +100,18 @@ public class EmployeeService {
                 .build();
     }
 
-    private Employee getEmployeeById(Long id) {
-        Optional<Employee> employeeOptional = employeeRepository.findById(id);
+
+    public BaseResponse<Void> updateEmployeePatch(EmployeeRequest employeeRequest, Long id) {
+        return null;
+    }
+
+    private Employee getEmployeeByIdAndActive(Long id,Integer active) {
+        Optional<Employee> employeeOptional = employeeRepository.findByIdAndActive(id,active);
 
         if (!employeeOptional.isPresent()) {
             throw new BaseException(ErrorCodeEnum.EMPLOYEE_NOT_FOUND);
         }
 
         return employeeOptional.get();
-    }
-
-
-    public BaseResponse<Void> updateEmployeePatch(EmployeeRequest employeeRequest, Long id) {
-        return null;
     }
 }
