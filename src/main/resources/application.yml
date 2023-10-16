@@ -3,7 +3,7 @@ server:
 
 spring:
   liquibase:
-    dropFirst: true
+#    dropFirst: true
     enabled: true
     changeLog: classpath:/db/changelog/db.changelog-master.yaml
   datasource:

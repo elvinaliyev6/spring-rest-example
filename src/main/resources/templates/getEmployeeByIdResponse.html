@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>RESULT</h2>
+
+<table class="table table-bordered" id="table">
+    <thead>
+    <tr class="table-secondary">
+        <th>ID</th>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Father name</th>
+        <th>Age</th>
+        <th>Dob</th>
+        <th>Gender</th>
+        <th>City</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td th:text="${employee.id}"></td>
+        <td th:text="${employee.name}"></td>
+        <td th:text="${employee.surname}"></td>
+        <td th:text="${employee.fatherName}"></td>
+        <td th:text="${employee.age}"></td>
+        <td th:text="${employee.dob}"></td>
+        <td th:text="${employee.gender}"></td>
+        <td th:text="${employee.city}"></td>
+    </tr>
+    </tbody>
+</body>
+</html>

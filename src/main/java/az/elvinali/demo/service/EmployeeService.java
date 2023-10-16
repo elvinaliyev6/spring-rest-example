@@ -39,7 +39,7 @@ public class EmployeeService {
         List<EmployeeResponse> employeeResponseList = new ArrayList<>();
 
         for (Employee employee : employees) {
-            EmployeeResponse employeeResponse =employeeMapper.mapEntityToResponse(employee);
+            EmployeeResponse employeeResponse = employeeMapper.mapEntityToResponse(employee);
 
             employeeResponseList.add(employeeResponse);
         }
@@ -55,10 +55,10 @@ public class EmployeeService {
     }
 
     public BaseResponse<Void> updateEmployee(EmployeeRequest employeeRequest, Long id) {
-        getEmployeeByIdAndActive(id,EnumAvailableStatus.ACTIVE.getValue());
+        getEmployeeByIdAndActive(id, EnumAvailableStatus.ACTIVE.getValue());
 
-       Employee empEntity= employeeMapper.mapRequestToEntity(employeeRequest);
-       empEntity.setId(id);
+        Employee empEntity = employeeMapper.mapRequestToEntity(employeeRequest);
+        empEntity.setId(id);
 
         employeeRepository.save(empEntity);
 
@@ -68,7 +68,7 @@ public class EmployeeService {
     }
 
     public BaseResponse<EmployeeResponse> deleteEmployee(Long id) {
-        Employee employee = getEmployeeByIdAndActive(id,EnumAvailableStatus.ACTIVE.getValue());
+        Employee employee = getEmployeeByIdAndActive(id, EnumAvailableStatus.ACTIVE.getValue());
         employee.setActive(EnumAvailableStatus.DEACTIVE.getValue());
         employeeRepository.save(employee);
 
@@ -83,7 +83,7 @@ public class EmployeeService {
     public BaseResponse<List<EmployeeResponse>> deleteSelectedEmployees(List<Long> ids) {
         List<EmployeeResponse> employeeList = new ArrayList<>();
         for (Long id : ids) {
-            Employee employee = getEmployeeByIdAndActive(id,EnumAvailableStatus.ACTIVE.getValue());
+            Employee employee = getEmployeeByIdAndActive(id, EnumAvailableStatus.ACTIVE.getValue());
             if (employee == null) {
                 throw new BaseException(ErrorCodeEnum.EMPLOYEE_NOT_FOUND);
             }
@@ -100,18 +100,22 @@ public class EmployeeService {
                 .build();
     }
 
-
     public BaseResponse<Void> updateEmployeePatch(EmployeeRequest employeeRequest, Long id) {
         return null;
     }
 
-    private Employee getEmployeeByIdAndActive(Long id,Integer active) {
-        Optional<Employee> employeeOptional = employeeRepository.findByIdAndActive(id,active);
+    private Employee getEmployeeByIdAndActive(Long id, Integer active) {
+        Optional<Employee> employeeOptional = employeeRepository.findByIdAndActive(id, active);
 
         if (!employeeOptional.isPresent()) {
             throw new BaseException(ErrorCodeEnum.EMPLOYEE_NOT_FOUND);
         }
 
         return employeeOptional.get();
+    }
+
+    public EmployeeResponse getEmployeeById(Long employeeId) {
+        Employee employee = getEmployeeByIdAndActive(employeeId, EnumAvailableStatus.ACTIVE.getValue());
+        return employeeMapper.mapEntityToResponse(employee);
     }
 }
