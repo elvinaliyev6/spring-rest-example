@@ -1,14 +1,12 @@
 package az.elvinali.demo.controller;
 
+import az.elvinali.demo.dto.request.EmployeeRequest;
 import az.elvinali.demo.dto.response.BaseResponse;
 import az.elvinali.demo.dto.response.EmployeeResponse;
-import az.elvinali.demo.model.Employee;
 import az.elvinali.demo.service.EmployeeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,7 +31,7 @@ public class UiController {
 
         List<EmployeeResponse> employees = empListBaseResponse.getData();
         model.addAttribute("employeeList", employees);
-        return "employees";
+        return "index";
 
     }
 
@@ -50,6 +48,23 @@ public class UiController {
     @GetMapping("/getById")
     public String getAllEmployees(){
         return "getEmployeeById";
+    }
+
+    @GetMapping("addEmployee")
+    public String addEmployee(){
+        return "addEmployee";
+    }
+
+    @PostMapping("addEmployeeSubmit")
+    public String addEmployee(@ModelAttribute("employee") EmployeeRequest employeeRequest){
+        employeeService.saveEmployee(employeeRequest);
+        return "redirect:/ui/getAll";
+    }
+
+    @GetMapping("deleteEmployee")
+    public String deleteEmployee(@RequestParam(value = "employeeId") Long employeeId){
+        employeeService.deleteEmployee(employeeId);
+        return "redirect:/ui/getAll";
     }
 
 
